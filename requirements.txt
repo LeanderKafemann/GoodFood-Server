@@ -1,3 +1,3 @@
 pyautogui
 legacy-cgi
-PyWSGIRef >= 1.1.16
+PyWSGIRef >= 1.1.17

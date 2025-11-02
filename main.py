@@ -1,5 +1,6 @@
 from PyWSGIRef import *
 import random
+from typing import *
 
 __version__ = "0.3.0"
 APP_NAME = "GoodFood Server"
@@ -19,45 +20,49 @@ def checkPwd(fs: FieldStorage) -> bool:
     except:
         return False
 
+def returnDefault(content: str) -> Tuple[List[str], str, str]:
+    return ([content.encode("utf-8")], "text/html", "200 OK")
+
 def main(path: str, fs: FieldStorage):
+    st = "200 OK"
     match path:
         case "/version":
-            return __version__
+            returnDefault(__version__)
         case "/main":
-            return SCHABLONEN["main"].decodedContext(globals())
+            returnDefault(SCHABLONEN["main"].decodedContext(globals()))
         case "/getDB":
             if checkPwd(fs):
                 with open("database.db", "rb") as f:
-                    return f.read()
+                    return [f.read()], "application/octet-stream", "200 OK"
             else:
-                return "Invalid password!"
+                returnDefault("Invalid password!")
         case "/setDB":
             if checkPwd(fs):
                 db_data = fs.getvalue("file")
                 with open("database.db", "wb") as f:
                     f.write(db_data)
-                return "Database updated successfully!"
+                returnDefault("Database updated successfully!")
             else:
-                return "Invalid password!"
+                returnDefault("Invalid password!")
         case "/getRooms":
             if checkPwd(fs):
                 with open("rooms.txt", "r", encoding="utf-8") as f:
-                    return f.read()
+                    returnDefault(f.read())
             else:
-                return "Invalid password!"
+                returnDefault("Invalid password!")
         case "/setRooms":
             if checkPwd(fs):
                 rooms_data = fs.getvalue("rooms")
                 with open("rooms.txt", "w", encoding="utf-8") as f:
                     f.write(rooms_data)
-                return "Rooms updated successfully!"
+                returnDefault("Rooms updated successfully!")
             else:
-                return "Invalid password!"
+                returnDefault("Invalid password!")
         case "/stats":
-            return STATS.export_stats()
+            returnDefault(STATS.export_stats())
         case "/" | _:
-            return "Not found..."
-app = makeApplicationObject(main, advanced=True, getStats=True, customEncoding=True, setContentType=True)
+            return ["Not found..."], "text/plain", "404 Not Found"
+app = makeApplicationObject(main, advanced=True, getStats=True, setAdvancedHeaders=True, customEncoding=True)
 
 if __name__ == "__main__":
     server = setUpServer(app)
