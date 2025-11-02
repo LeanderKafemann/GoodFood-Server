@@ -1,7 +1,7 @@
 from PyWSGIRef import *
 import random
 
-__version__ = "1.0.0"
+__version__ = "0.3.0"
 APP_NAME = "GoodFood Server"
 
 BETA.enable()
@@ -39,10 +39,27 @@ def main(path: str, fs: FieldStorage):
                 return "Database updated successfully!"
             else:
                 return "Invalid password!"
+        case "/getRooms":
+            if checkPwd(fs):
+                with open("rooms.txt", "r", encoding="utf-8") as f:
+                    return f.read()
+            else:
+                return "Invalid password!"
+        case "/setRooms":
+            if checkPwd(fs):
+                rooms_data = fs.getvalue("rooms")
+                with open("rooms.txt", "w", encoding="utf-8") as f:
+                    f.write(rooms_data)
+                return "Rooms updated successfully!"
+            else:
+                return "Invalid password!"
+        case "/stats":
+            return STATS.export_stats()
         case "/" | _:
             return "Not found..."
-app = makeApplicationObject(main, advanced=True)
+app = makeApplicationObject(main, advanced=True, getStats=True, customEncoding=True, setContentType=True)
 
 if __name__ == "__main__":
     server = setUpServer(app)
+    print("Serving...")
     server.serve_forever()
