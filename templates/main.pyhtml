@@ -1,0 +1,16 @@
+<{{evalPyHTML}}>
+        <title>Main</title>
+        <{{evalPyHTML-modernStyling: true}}
+        <meta name="author" content="Leander Kafemann"/>
+    </head>
+    <body>
+        <h1>
+            <{{evalPyHTML-eval: APP_NAME :eval-}}>
+        </h1>
+        <p>
+            Welcome to the main page of the application.
+        </p>
+        <h6>
+            <{{evalPyHTML-eval: __version__ :eval-}}>
+        </h6>
+<{{evalPyHTML}}>
