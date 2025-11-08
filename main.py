@@ -16,11 +16,12 @@ def checkPwd(fs: FieldStorage) -> bool:
         input_pwd = fs.getvalue("password")
         if input_pwd is None:
             return False
+        #print(f"Checking password {input_pwd}...")
         if isinstance(input_pwd, bytes):
             input_pwd = input_pwd.decode("utf-8")
         input_pwd = input_pwd.strip()
         random.seed(int(input_pwd))
-        input_pwd_ = str(random.randint(0, 1000000000))
+        input_pwd_ = str(random.randint(1, 1000000000))
         return stored_pwd == input_pwd_
     except:
         return False

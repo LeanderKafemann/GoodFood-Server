@@ -5,7 +5,7 @@ if not "password.txt" in os.listdir():
     with open("password.txt", "w") as f:
         pwd_ = int(py.password(text="Set your password:", title="Password Setup"))
         random.seed(pwd_)
-        f.write(str(random.randint(0, 1000000000)))
+        f.write(str(random.randint(1, 1000000000)))
 
 con = sqlite3.connect("database.db")
 cur = con.cursor()
