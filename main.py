@@ -2,7 +2,7 @@ from PyWSGIRef import *
 import random
 from typing import *
 
-__version__ = "1.1.0--BETA"
+__version__ = "1.0.0"
 APP_NAME = "GoodFood Server"
 
 BETA.enable()
