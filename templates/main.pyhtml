@@ -1,6 +1,6 @@
 <{{evalPyHTML}}>
         <title>Main</title>
-        <{{evalPyHTML-modernStyling: true}}
+        <{{evalPyHTML-modernStyling: true}}>
         <meta name="author" content="Leander Kafemann"/>
     </head>
     <body>
